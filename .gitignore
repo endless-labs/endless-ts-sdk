@@ -1,0 +1,21 @@
+.endless/
+.DS_Store
+*/**/.DS_Store
+.env
+.history/
+.idea/
+.npm/
+.nyc_output/
+.vscode/
+build/
+coverage/
+dist/
+node_modules/
+npm-debug.log
+tmp/
+examples/typescript/facoin/facoin.json
+*.bak
+
+# Vim swap files
+*.swp
+*.log

@@ -1,0 +1,9 @@
+fragment AnsTokenFragment on current_endless_names {
+  domain
+  expiration_timestamp
+  registered_address
+  subdomain
+  token_standard
+  is_primary
+  owner_address
+}

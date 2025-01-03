@@ -1,0 +1,30 @@
+{
+  "name": "endless-test",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "bindings": "ts-node binding.ts",
+    "multi_authkey": "ts-node multi_authkey.ts",
+    "multisig": "ts-node multisig_account.ts",
+    "onchain_multisig": "ts-node onchain_multisig.ts",
+    "transfer_coin": "ts-node transfer_coin.ts",
+    "your_fungible_asset": "ts-node your_fungible_asset.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "npm-run-all": "latest",
+    "superagent": "^8.1.2",
+    "tweetnacl": "^1.0.3"
+  },
+  "peerDependencies": {
+    "endless-ts-sdk": "link:../../endless-ts-sdk"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  }
+}
