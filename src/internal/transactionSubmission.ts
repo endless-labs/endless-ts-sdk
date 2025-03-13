@@ -18,6 +18,7 @@ import {
   generateTransactionPayload,
   generateSignedTransactionForSimulation,
   generateSignedTransaction,
+  generateMockSignedTransactionForSimulation,
 } from "../transactions/transactionBuilder/transactionBuilder";
 import {
   InputGenerateTransactionData,
@@ -30,6 +31,7 @@ import {
   InputGenerateSingleSignerRawTransactionData,
   AnyTransactionPayloadInstance,
   EntryFunctionABI,
+  InputSimulateTransactionDataMock,
 } from "../transactions/types";
 import { getInfo } from "./account";
 import { UserTransactionResponse, PendingTransactionResponse, MimeType, HexInput, TransactionResponse } from "../types";
@@ -227,6 +229,37 @@ export async function simulateTransaction(
     feePayerPublicKey,
     options,
   });
+
+  const { data } = await postEndlessFullNode<Uint8Array, Array<UserTransactionResponse>>({
+    endlessConfig,
+    body: signedTransaction,
+    path: "transactions/simulate",
+    params: {
+      estimate_gas_unit_price: args.options?.estimateGasUnitPrice ?? false,
+      estimate_max_gas_amount: args.options?.estimateMaxGasAmount ?? false,
+      estimate_prioritized_gas_unit_price: args.options?.estimatePrioritizedGasUnitPrice ?? false,
+    },
+    originMethod: "simulateTransaction",
+    contentType: MimeType.BCS_SIGNED_TRANSACTION,
+  });
+  return data;
+}
+
+/**
+ * Simulates a transaction before singing it.
+ *
+ * @param args.signer The signer authentication key
+ * @param args.transaction The raw transaction to simulate
+ * @param args.secondarySigners optional. For when the transaction is a multi signers transaction
+ * @param args.feePayer optional. For when the transaction is a fee payer (aka sponsored) transaction
+ * @param args.options optional. A config to simulate the transaction with
+ */
+export async function mockTransaction(
+  args: { endlessConfig: EndlessConfig } & InputSimulateTransactionDataMock,
+): Promise<Array<UserTransactionResponse>> {
+  const { endlessConfig, transaction } = args;
+
+  const signedTransaction = generateMockSignedTransactionForSimulation(transaction);
 
   const { data } = await postEndlessFullNode<Uint8Array, Array<UserTransactionResponse>>({
     endlessConfig,

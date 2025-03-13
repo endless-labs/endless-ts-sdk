@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { PublicKey } from "../../core";
-import { simulateTransaction } from "../../internal/transactionSubmission";
+import { mockTransaction, simulateTransaction } from "../../internal/transactionSubmission";
 import { AnyRawTransaction, InputSimulateTransactionOptions } from "../../transactions";
 import { UserTransactionResponse } from "../../types";
 import { EndlessConfig } from "../endlessConfig";
@@ -13,6 +13,7 @@ import { ValidateFeePayerDataOnSimulation } from "./helpers";
  * A class to handle all `Simulate` transaction operations
  */
 export class Simulate {
+
   readonly config: EndlessConfig;
 
   constructor(config: EndlessConfig) {
@@ -59,5 +60,21 @@ export class Simulate {
     options?: InputSimulateTransactionOptions;
   }): Promise<Array<UserTransactionResponse>> {
     return simulateTransaction({ endlessConfig: this.config, ...args });
+  }
+
+  /**
+   * Simulate a transaction
+   *
+   * @param args.transaction An instance of a raw transaction
+   * @param args.options optional. Optional transaction configurations
+   *
+   * @returns Array<UserTransactionResponse>
+   */
+  @ValidateFeePayerDataOnSimulation
+  async mock(args: {
+    transaction: AnyRawTransaction;
+    options?: InputSimulateTransactionOptions;
+  }): Promise<Array<UserTransactionResponse>> {
+    return mockTransaction({ endlessConfig: this.config, ...args });
   }
 }

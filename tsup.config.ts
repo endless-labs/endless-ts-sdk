@@ -1,6 +1,5 @@
 import { defineConfig } from "tsup";
 import type { Options, Format } from "tsup";
-
 // Ensure that these option fields are not undefined
 type MandatoryOptions = Options & {
   outDir: string;
@@ -44,4 +43,26 @@ const ESM_CONFIG: MandatoryOptions = {
   outDir: "dist/esm",
 };
 
-export default defineConfig([COMMON_CONFIG, ESM_CONFIG]);
+const MINIPROGRAM_CONFIG: MandatoryOptions = {
+  ...DEFAULT_CONFIG,
+  skipNodeModulesBundle: false,
+  platform: "browser",
+  entry: ["src/index.ts"],
+  format: "cjs",
+  outDir: "dist/miniprogram",
+  noExternal: [
+    "@noble/curves",
+    "@noble/hashes",
+    "@scure/bip32",
+    "@scure/bip39",
+    "bs58",
+    "endless-client",
+    "eventemitter3",
+    "form-data",
+    "js-base64",
+    "jwt-decode",
+    "poseidon-lite",
+  ]
+}
+
+export default defineConfig([COMMON_CONFIG, ESM_CONFIG, MINIPROGRAM_CONFIG]);

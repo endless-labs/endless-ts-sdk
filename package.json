@@ -1,7 +1,8 @@
 {
-  "name": "endless-ts-sdk",
+  "name": "@endlesslab/endless-ts-sdk",
   "description": "Endless TypeScript SDK",
   "packageManager": "pnpm@8.9.0",
+  "author": "endless",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=11.0.0"
@@ -40,17 +41,15 @@
     "build": "tsup",
     "build:watch": "tsup --watch",
     "_fmt": "prettier 'src/**/*.ts' 'examples/**/*.ts' '.eslintrc.js'",
-    "lint": "eslint 'src/**/*.ts' 'examples/**/*.ts'",
-    "doc": "scripts/generateDocs.sh",
-    "check-version": "scripts/checkVersion.sh",
-    "update-version": "scripts/updateVersion.sh && pnpm doc"
+    "lint": "eslint 'src/**/*.ts' 'examples/**/*.ts'"
   },
   "dependencies": {
     "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
     "@scure/bip32": "^1.4.0",
     "@scure/bip39": "^1.3.0",
-    "bs58": "^5.0.0",
+    "bs58": "^6.0.0",
+    "crypto-browserify": "^3.12.1",
     "endless-client": "^0.1.1",
     "eventemitter3": "^5.0.1",
     "form-data": "^4.0.0",
@@ -87,5 +86,5 @@
     "typedoc": "^0.25.4",
     "typescript": "^5.3.3"
   },
-  "version": "1.0.40"
+  "version": "1.0.2"
 }

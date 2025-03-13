@@ -1,4 +1,6 @@
-import { Account, AccountAddress, Endless, EndlessConfig, Ed25519PrivateKey, Network } from "../../dist/common/index";
+// import { Account, AccountAddress, Endless, EndlessConfig, Ed25519PrivateKey, Network } from "../../dist/miniprogram/index";
+const { Account, AccountAddress, Endless, EndlessConfig, Ed25519PrivateKey, Network } = require('../../dist/common/index');
+import endlessClient from "endless-client";
 
 const config = new EndlessConfig({
   network: Network.TESTNET,

@@ -7,7 +7,7 @@
 
 The Endless TypeScript SDK provides a convenient way to interact with the Endless blockchain using TypeScript. It offers a set of utility functions, classes, and types to simplify the integration process and enhance developer productivity.
 
-This repository supports version >= 0.0.0 of the [Endless SDK npm package](https://www.npmjs.com/package/endless-ts-sdk).
+This repository supports version >= 0.0.0 of the [Endless SDK npm package](https://www.npmjs.com/package/@endlesslab/endless-ts-sdk).
 
 ## Installation
 
@@ -16,7 +16,7 @@ This repository supports version >= 0.0.0 of the [Endless SDK npm package](https
 Install with your favorite package manager such as npm, yarn, or pnpm:
 
 ```bash
-pnpm install endless-ts-sdk
+pnpm install @endlesslab/endless-ts-sdk
 ```
 ## Usage
 
@@ -122,7 +122,7 @@ const pendingTransaction = await endless.signAndSubmitTransaction({ signer: alic
 If you see import error when you do this
 
 ```typescript
-import { Endless, EndlessConfig, Network } from "endless-ts-sdk";
+import { Endless, EndlessConfig, Network } from "@endlesslab/endless-ts-sdk";
 ```
 
 It could be your `tsconfig.json` is not incompatible, make sure your `moduleResolution` is set to `node` instead of `bundler`.

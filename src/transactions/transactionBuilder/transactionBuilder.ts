@@ -21,6 +21,7 @@ import { normalizeBundle } from "../../utils/normalizeBundle";
 import {
   AccountAuthenticator,
   AccountAuthenticatorEd25519,
+  AccountAuthenticatorMock,
   AccountAuthenticatorSingleKey,
 } from "../authenticator/account";
 import {
@@ -449,6 +450,71 @@ export function generateSignedTransactionForSimulation(args: InputSimulateTransa
   } else {
     throw new Error("Invalid public key");
   }
+  return new SignedTransaction(transaction.rawTransaction, transactionAuthenticator).bcsToBytes();
+}
+
+/**
+ * Simulate a transaction before signing and submit to chain
+ *
+ * @param transaction A endless transaction type to sign
+ *
+ * @returns A signed serialized transaction that can be simulated
+ */
+export function generateMockSignedTransactionForSimulation(transaction: AnyRawTransaction): Uint8Array {
+
+  const accountAuthenticator = new AccountAuthenticatorMock(transaction.rawTransaction.sender)
+
+  // fee payer transaction
+  if (transaction.feePayerAddress) {
+    const transactionToSign = new FeePayerRawTransaction(
+      transaction.rawTransaction,
+      transaction.secondarySignerAddresses ?? [],
+      transaction.feePayerAddress,
+    );
+    let secondaryAccountAuthenticators: Array<AccountAuthenticator> = [];
+    if (transaction.secondarySignerAddresses) {
+      secondaryAccountAuthenticators = transaction.secondarySignerAddresses.map((secondarySigner) =>
+        new AccountAuthenticatorMock(secondarySigner),
+      );
+    }
+    const feePayerAuthenticator = new AccountAuthenticatorMock(transaction.feePayerAddress);
+
+    const transactionAuthenticator = new TransactionAuthenticatorFeePayer(
+      accountAuthenticator,
+      transaction.secondarySignerAddresses ?? [],
+      secondaryAccountAuthenticators,
+      {
+        address: transaction.feePayerAddress,
+        authenticator: feePayerAuthenticator,
+      },
+    );
+    return new SignedTransaction(transactionToSign.raw_txn, transactionAuthenticator).bcsToBytes();
+  }
+
+  // multi agent transaction
+  if (transaction.secondarySignerAddresses) {
+    const transactionToSign = new MultiAgentRawTransaction(
+      transaction.rawTransaction,
+      transaction.secondarySignerAddresses,
+    );
+
+    let secondaryAccountAuthenticators: Array<AccountAuthenticator> = [];
+
+    secondaryAccountAuthenticators = transaction.secondarySignerAddresses.map((authkeys) =>
+      new AccountAuthenticatorMock(authkeys),
+    );
+
+    const transactionAuthenticator = new TransactionAuthenticatorMultiAgent(
+      accountAuthenticator,
+      transaction.secondarySignerAddresses,
+      secondaryAccountAuthenticators,
+    );
+
+    return new SignedTransaction(transactionToSign.raw_txn, transactionAuthenticator).bcsToBytes();
+  }
+
+  // single signer raw transaction
+  const transactionAuthenticator = new TransactionAuthenticatorSingleSender(accountAuthenticator);
   return new SignedTransaction(transaction.rawTransaction, transactionAuthenticator).bcsToBytes();
 }
 

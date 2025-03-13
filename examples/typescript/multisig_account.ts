@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import {
-  Account, AccountAddress, Endless, EndlessConfig, MultiAuthKeyAccount, Network, U128, U64, UserTransactionResponse
-} from "../../dist/common/index";
+  Account, AccountAddress, Endless, EndlessConfig, getPaymentChecksum, MultiAuthKeyAccount, Network, U128, U64, UserTransactionResponse
+} from "../../dist/common";
 
 /*
  * This example show how to use multi-signature account feature
@@ -35,7 +35,7 @@ async function main() {
       function: "0x1::account::create_multisig_account",
       functionArguments: [new U64(3)]
     },
-    secondarySignerAddresses: [bob.accountAddress, charlie.accountAddress],
+    secondarySignerAddresses: [alice.accountAddress, bob.accountAddress, charlie.accountAddress],
   })
   const aliceAuth = alice.signTransactionWithAuthenticator(txn)
   const bobAuth = bob.signTransactionWithAuthenticator(txn)
@@ -43,7 +43,7 @@ async function main() {
   pending = await endless.transaction.submit.multiAgent({
     transaction: txn,
     senderAuthenticator: aliceAuth,
-    additionalSignersAuthenticators: [bobAuth, charlieAuth],
+    additionalSignersAuthenticators: [aliceAuth, bobAuth, charlieAuth],
   })
   tx = await endless.waitForTransaction({ transactionHash: pending.hash })
   const multisigAddress = AccountAddress.from(
@@ -77,6 +77,14 @@ async function main() {
       functionArguments: [AccountAddress.ONE, new U128(100)]
     },
   })
+  const transferSimulationResp = await endless.transaction.simulate.mock({
+    transaction: transferTxn,
+  })
+  if (!transferSimulationResp[0].success) {
+    throw new Error(transferSimulationResp[0].vm_status)
+  }
+  const paymentChecksum = getPaymentChecksum(transferSimulationResp[0])
+  transferTxn.upgradeToSafe(paymentChecksum)
   const aliceSignature = alice.signTransaction(transferTxn)
   const bobSignature = bob.signTransaction(transferTxn)
   const charlieSignature = charlie.signTransaction(transferTxn)

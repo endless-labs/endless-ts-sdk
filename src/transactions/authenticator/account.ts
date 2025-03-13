@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { Serializer, Deserializer, Serializable } from "../../bcs";
+import { AccountAddress } from "../../core";
 import { AnyPublicKey, AnySignature } from "../../core/crypto";
 import { Bls12381PublicKey, Bls12381Signature } from "../../core/crypto/bls12381";
 import { Ed25519PublicKey, Ed25519Signature } from "../../core/crypto/ed25519";
@@ -29,6 +30,10 @@ export abstract class AccountAuthenticator extends Serializable {
         return AccountAuthenticatorMultiKey.load(deserializer);
       case AccountAuthenticatorVariant.MultiAuthKey:
         return AccountAuthenticatorMultiAuthKey.load(deserializer);
+      case AccountAuthenticatorVariant.Bls12381:
+        return AccountAuthenticatorBls12381.load(deserializer);
+      case AccountAuthenticatorVariant.Mock:
+        return AccountAuthenticatorMock.load(deserializer);
       default:
         throw new Error(`Unknown variant index for AccountAuthenticator: ${index}`);
     }
@@ -224,5 +229,24 @@ export class AccountAuthenticatorBls12381 extends AccountAuthenticator {
     const public_key = Bls12381PublicKey.deserialize(deserializer);
     const signature = Bls12381Signature.deserialize(deserializer);
     return new AccountAuthenticatorBls12381(public_key, signature);
+  }
+}
+
+export class AccountAuthenticatorMock extends AccountAuthenticator {
+  public readonly authenticator: AccountAddress;
+
+  constructor(authenticator: AccountAddress) {
+    super();
+    this.authenticator = authenticator
+  }
+
+  serialize(serializer: Serializer): void {
+    serializer.serializeU32AsUleb128(AccountAuthenticatorVariant.Mock);
+    this.authenticator.serialize(serializer)
+  }
+
+  static load(deserializer: Deserializer): AccountAuthenticatorMock {
+    const authenticator = AccountAddress.deserialize(deserializer);
+    return new AccountAuthenticatorMock(authenticator);
   }
 }

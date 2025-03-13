@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import {
-  Account, AccountAddress, Endless, EndlessConfig, getPaymentChecksum, Network, U64,
-} from "endless-ts-sdk";
+const {
+  Account, AccountAddress, Endless, EndlessConfig, getPaymentChecksum, Network, U128,
+} = require('../../dist/common/index');
 
 async function main() {
   const config = new EndlessConfig({ network: Network.CUSTOM, fullnode: "http://18.163.197.60:8080/v1" });
@@ -16,7 +16,7 @@ async function main() {
     sender: alice.accountAddress,
     data: {
       function: "0x1::endless_coin::transfer",
-      functionArguments: [AccountAddress.from("0xcafe"), new U64(100)]
+      functionArguments: [AccountAddress.from("0xcafe"), new U128(100)]
     },
   })
 

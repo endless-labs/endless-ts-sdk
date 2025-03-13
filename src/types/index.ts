@@ -108,6 +108,7 @@ export enum AccountAuthenticatorVariant {
   MultiKey = 3,
   MultiAuthKey = 4,
   Bls12381 = 5,
+  Mock = 6,
 }
 
 export enum AnyPublicKeyVariant {

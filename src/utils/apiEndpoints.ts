@@ -32,9 +32,9 @@ export const NetworkToFaucetAPI: Record<string, string> = {
 };
 
 export const NetworkToProverAPI: Record<string, string> = {
-  mainnet: "https://wallet.endless.link",
-  testnet: "https://wallet.endless.link",
-  devnet: "https://wallet.endless.link",
+  mainnet: "https://wallet-zk.endless.link",
+  testnet: "https://wallet-zk.endless.link",
+  devnet: "https://wallet-zk.endless.link",
   // Use the devnet service for local environment
   local: "http://localhost:3001",
 };
@@ -48,10 +48,9 @@ export enum Network {
 }
 
 export const NetworkToChainId: Record<string, number> = {
-  // TODO mainnet 220
-  mainnet: 10,
+  mainnet: 220,
   testnet: 221,
-  local: 13,
+  local: 223,
   devnet: 11
 };
 

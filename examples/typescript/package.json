@@ -20,7 +20,7 @@
     "tweetnacl": "^1.0.3"
   },
   "peerDependencies": {
-    "endless-ts-sdk": "link:../../endless-ts-sdk"
+    "@endlesslab/endless-ts-sdk": "link:../../endless-ts-sdk"
   },
   "devDependencies": {
     "@types/node": "latest",

@@ -19,11 +19,11 @@ const HomePage = () => {
   const [ balance, setBalance ] = useState('')
 
   const getBalanceHandler = async () => {
-    const balanceRes = await endless.getAccountEDSAmount({
+    const balanceResult = await endless.getAccountEDSAmount({
       accountAddress: AccountAddress.fromBs58String('3ykQg7FegmL69JeVJsfDxyFU6o4rPEj1v5vvD34ZS367'),
     })
-    setBalance(balanceRes.toString())
-    console.log('balanceRes', balanceRes)
+    setBalance(balanceResult.toString())
+    console.log('balanceResult', balanceResult)
   }
 
   return (

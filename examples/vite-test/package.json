@@ -13,11 +13,9 @@
     "@douyinfe/semi-icons": "^2.63.1",
     "@douyinfe/semi-icons-lab": "^2.63.1",
     "@douyinfe/semi-ui": "^2.63.1",
-    "endless-web3-sdk": "^0.1.39",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0",
-    "endless-ts-sdk": "link:../../endless-ts-sdk"
+    "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
