@@ -41,10 +41,16 @@ import {
   InputGenerateTransactionOptions,
   parseTypeTag,
   TypeTagAddress,
-  TypeTagU64,
+  TypeTagU128,
 } from "../transactions";
 import { generateTransaction } from "./transactionSubmission";
 import { SimpleTransaction } from "../transactions/instances/simpleTransaction";
+import { MoveAbility } from "../types";
+
+const transferFungibleAssetAbi: EntryFunctionABI = {
+  typeParameters: [{ constraints: [MoveAbility.KEY] }],
+  parameters: [parseTypeTag("0x1::object::Object"), new TypeTagAddress(), new TypeTagU128()],
+};
 
 export async function getFungibleAssetMetadata(args: {
   endlessConfig: EndlessConfig;
@@ -134,6 +140,7 @@ export async function transferFungibleAsset(args: {
       function: "0x1::primary_fungible_store::transfer",
       typeArguments: ["0x1::fungible_asset::Metadata"],
       functionArguments: [fungibleAssetMetadataAddress, recipient, amount],
+      abi: transferFungibleAssetAbi,
     },
     options,
   });
