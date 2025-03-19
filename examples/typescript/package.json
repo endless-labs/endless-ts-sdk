@@ -11,7 +11,8 @@
     "multisig": "ts-node multisig_account.ts",
     "onchain_multisig": "ts-node onchain_multisig.ts",
     "transfer_coin": "ts-node transfer_coin.ts",
-    "your_fungible_asset": "ts-node your_fungible_asset.ts"
+    "your_fungible_asset": "ts-node your_fungible_asset.ts",
+    "build_tx_with_abi": "ts-node build_transaction_by_abi.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
